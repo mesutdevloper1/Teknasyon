@@ -1,34 +1,53 @@
 package com.teknasyon.tests;
 
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.net.MalformedURLException;
 
 public class Scenario5Test extends BaseTest {
 
+    private AndroidDriver<MobileElement> driver;
+    private SwipeUtils swipeUtils;
+
+    @Override
+    @BeforeMethod
+    public void setUp() throws MalformedURLException {
+        // Driver'ı BaseTest'ten al
+        driver = getDriver();  // Bu metodun BaseTest'te mevcut olduğunu varsayıyoruz
+        swipeUtils = new SwipeUtils(driver);
+    }
+
     @Test
     public void testNotification() {
-        driver.findElement(By.xpath("//android.widget.TextView[@content-desc='Views']")).click();
+        // 'Views' menüsüne tıkla
+        driver.findElement(By.xpath("//android.widget.TextView[@content-desc='App']")).click();
+        // Yukarı kaydır
+        swipeUtils.swipe(SwipeUtils.Direction.DOWN);
+        Assert.assertTrue(driver.findElement(By.xpath("//android.widget.TextView[@content-desc='Tabs']")).isDisplayed());
 
-        //Swipe up
-
-        driver.findElement(By.xpath("//android.widget.TextView[@content-desc='Tabs']")).isDisplayed();
-
+        // 'Notification' menüsüne tıkla
         driver.findElement(By.xpath("//android.widget.TextView[@content-desc='Notification']")).click();
+
+        // 'Incoming Message' menüsüne tıkla
         driver.findElement(By.xpath("//android.widget.TextView[@content-desc='IncomingMessage']")).click();
 
-        // Show notification
+        // Bildirimi göster
         driver.findElement(By.id("io.appium.android.apis:id/notify_app")).click();
 
-        // Open notification bar and verify
+        // Bildirim çubuğunu aç ve bildirimi doğrula
         driver.openNotifications();
-        MobileElement notification = driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.widget.FrameLayout[2]/android.widget.FrameLayout[1]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout"));
-        Assert.assertTrue(notification.isDisplayed());
+        MobileElement notification = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/status_bar_latest_event_content']"));
+        Assert.assertTrue(notification.isDisplayed(), "Notification is not displayed!");
 
-        // Click notification and verify detail
+        // Bildirime tıkla ve detayı doğrula
         notification.click();
         String detailText = driver.findElement(By.id("io.appium.android.apis:id/message")).getText();
         Assert.assertTrue(detailText.contains("Did you notice that the status bar icon disappeared?"));
     }
 }
+
