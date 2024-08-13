@@ -11,6 +11,7 @@ public class Scenario5Test extends BaseTest {
     public void testNotification() {
         driver.findElement(By.xpath("//android.widget.TextView[@content-desc='Views']")).click();
 
+        //Swipe up
 
         driver.findElement(By.xpath("//android.widget.TextView[@content-desc='Tabs']")).isDisplayed();
 

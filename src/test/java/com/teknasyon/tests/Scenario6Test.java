@@ -11,23 +11,23 @@ public class Scenario6Test extends BaseTest {
     @Override
     public void setUp() throws MalformedURLException {
         // Delete and reinstall app
-        driver.removeApp("com.example.myapp");
+        driver.removeApp("io.appium.android.apis");
         super.setUp();
     }
 
 
     @Test
     public void testScrollableTabs() {
-        driver.findElement(By.xpath("//android.widget.TextView[@text='Views']")).click();
+        driver.findElement(By.xpath("")).click();
 
-        driver.findElement(By.xpath("//android.widget.TextView[@text='Tabs']")).click();
-        driver.findElement(By.xpath("//android.widget.TextView[@text='5. Scrollable']")).click();
+        driver.findElement(By.xpath("")).click();
+        driver.findElement(By.xpath("")).click();
 
         // Scroll to last tab
-        driver.findElement(By.xpath("//android.widget.TextView[@text='Tab 30']")).click();
+        driver.findElement(By.xpath("")).click();
 
         // Verify page content
-        String pageText = driver.findElement(By.id("com.example.myapp:id/page_content")).getText();
+        String pageText = driver.findElement(By.id("")).getText();
         Assert.assertTrue(pageText.contains("Tab 30 Content"));
     }
 }
